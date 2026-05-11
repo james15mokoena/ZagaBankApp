@@ -37,7 +37,7 @@ Entity: Client_Address
 
 Entity: Physical Address
     Attributes:
-        - Client ID
+        - Address Id
         - Street number
         - Street name
         - Suburb

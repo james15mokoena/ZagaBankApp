@@ -47,10 +47,10 @@ Preconditions:
     1. User is on the login page.
 
 Steps:
-    1. User enters username.
+    1. User enters email.
     2. User enters password.
     3. User presses the login button.
-    4. System verifies the username and password.
+    4. System verifies the email and password.
     5. System gives user access to the home page.
 
 Extensions:
