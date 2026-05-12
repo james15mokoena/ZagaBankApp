@@ -84,7 +84,9 @@ class _LoginFormState extends State<LoginForm> {
 
                     if (isLoggedIn) {
                       Navigator.of(context).pop();
-                      Navigator.of(context).pushNamed(RouteGenerator.homePage);
+                      Navigator.of(
+                        context,
+                      ).pushNamed(RouteGenerator.layoutPage);
                     }
                   },
                   style: ElevatedButton.styleFrom(

@@ -1,6 +1,8 @@
 import 'package:flutter/widgets.dart';
 
 /// Encapsulates the user's login details.
+///
+/// The business logic for the LoginForm widget.
 class LoginModel {
   // The user's email and password.
   String? _email;
@@ -15,7 +17,14 @@ class LoginModel {
 
   String? get password => _password;
 
-  // utilities
+  /// Invalidates the user's login details when they log out.
+  void invalidate(BuildContext context) {
+    _email = null;
+    _password = null;
+    while (Navigator.canPop(context)) {
+      Navigator.pop(context);
+    }
+  }
 
   /// Given the `email`, it checks if the `email` is valid; if it is
   /// it returns `null`, otherwise an error message.

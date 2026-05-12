@@ -11,7 +11,6 @@ class LoginPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("ZagaBank", style: TextStyle(fontSize: 30)),
         backgroundColor: Colors.blueGrey,
-        centerTitle: true,
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
