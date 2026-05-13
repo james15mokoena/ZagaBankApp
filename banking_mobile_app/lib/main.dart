@@ -4,6 +4,8 @@ import 'package:banking_mobile_app/models/bottom_navbar_model.dart';
 import 'package:banking_mobile_app/models/login_model.dart';
 import 'package:banking_mobile_app/models/reset_card_pin_model.dart';
 import 'package:banking_mobile_app/routes.dart';
+import 'package:banking_mobile_app/services/card_service.dart';
+import 'package:banking_mobile_app/services/login_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
@@ -19,10 +21,17 @@ class BankingApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: <SingleChildWidget>[
-        Provider<LoginModel>(create: (_) => LoginModel()),
+        // register services
+        Provider<CardService>(create: (_) => CardService()),
+        Provider<LoginService>(create: (_) => LoginService()),
+        // register models
+        ChangeNotifierProvider<LoginModel>(create: (_) => LoginModel()),
         Provider<CardDetailsModel>(create: (_) => CardDetailsModel()),
         Provider<ResetCardPinModel>(create: (_) => ResetCardPinModel()),
-        ChangeNotifierProvider<CardsModel>(create: (_) => CardsModel()),
+        ChangeNotifierProvider<CardsModel>(
+          create: (context) =>
+              CardsModel(loginModel: context.read<LoginModel>()),
+        ),
         ChangeNotifierProvider(create: (_) => BottomNavbarModel()),
       ],
       child: MaterialApp(

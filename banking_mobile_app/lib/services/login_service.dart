@@ -14,7 +14,7 @@ class LoginService {
     //
 
     http.Response resp = await http.post(
-      Uri.parse("${ServerService.serverIpAddress}/Login/Login"),
+      Uri.parse("${ServerService.serverIPAddressSN}/Login/Login"),
       headers: {"Content-Type": "application/json"},
       encoding: Encoding.getByName("utf-8"),
       body: jsonEncode(details),

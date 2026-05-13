@@ -13,17 +13,17 @@ public class CardController(CardService service) : ControllerBase
     [HttpGet("{email}")]
     public IActionResult ViewCardsByEmail(string? email) =>
         ValidationService.AllValid(email) && _cardService.GetCardsByEmail(email) is List<CardDto> cards ?
-        Ok($"{cards}\n") : BadRequest("Failed to get cards.\n");
+        Ok(cards) : BadRequest("Failed to get cards.\n");
 
     [HttpGet("{email}/{cardNo}")]
     public IActionResult ViewCardDetailsByEmailAndCardNo(string? email, string? cardNo) =>
         ValidationService.AllValid(email, cardNo) &&
         _cardService.GetCardDetailsByEmailAndCardNo(email, cardNo) is CardDto card ?
-        Ok($"{card}\n") : BadRequest("Failed to get card details.\n");
+        Ok(card) : BadRequest("Failed to get card details.\n");
     
     [HttpPut]
     public IActionResult ResetCardPin(ResetCardPinDto dto) =>
         ValidationService.AllValid(dto.Email, dto.CardNo, dto.OldPin, dto.NewPin) &&
         _cardService.ResetCardPin(dto.Email, dto.CardNo, dto.OldPin, dto.NewPin) ?
-        Ok("true\n") : BadRequest("Failed to reset card pin\n");
+        Ok("true") : BadRequest("Failed to reset card pin\n");
 }

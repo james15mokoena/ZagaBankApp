@@ -5,11 +5,12 @@ import 'package:flutter/widgets.dart';
 /// Encapsulates the user's login details.
 ///
 /// The business logic for the LoginForm widget.
-class LoginModel {
+class LoginModel with ChangeNotifier {
   // The user's email and password.
   String? _email;
   String? _password;
   bool _isLoggedIn = false;
+  bool _hasAttemptedLogin = false;
 
   LoginModel({String? email, String? password})
     : _email = email,
@@ -22,10 +23,14 @@ class LoginModel {
 
   bool get isLoggedIn => _isLoggedIn;
 
+  bool get hasAttemptedLogin => _hasAttemptedLogin;
+
   /// Invalidates the user's login details when they log out.
   void invalidate(BuildContext context) {
     _email = null;
     _password = null;
+    _isLoggedIn = false;
+    _hasAttemptedLogin = false;
     while (Navigator.canPop(context)) {
       Navigator.pop(context);
     }
@@ -34,7 +39,10 @@ class LoginModel {
   /// Given the `email`, it checks if the `email` is valid; if it is
   /// it returns `null`, otherwise an error message.
   String? validateEmail(String? email) {
-    if (email != null && email.isNotEmpty && email.length <= 50) {
+    if (email != null &&
+        email.isNotEmpty &&
+        email.length <= 50 &&
+        !email.contains(" ")) {
       if (email.contains("@") &&
           email.indexOf("@") > 0 &&
           email.indexOf("@") < email.length - 1) {
@@ -70,9 +78,11 @@ class LoginModel {
       _email = email;
       _password = password;
 
+      _hasAttemptedLogin = true;
       _isLoggedIn = await LoginService.login(
         LoginDto.fromJson({"email": _email, "password": _password}),
       );
+      notifyListeners();
     }
   }
 }

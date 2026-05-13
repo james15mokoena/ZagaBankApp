@@ -74,28 +74,40 @@ class _LoginFormState extends State<LoginForm> {
             builder: (context, model, child) {
               return Padding(
                 padding: EdgeInsetsGeometry.only(bottom: 30),
-                child: ElevatedButton(
-                  onPressed: () async {
-                    await model.login(
-                      _key,
-                      emailController.text,
-                      passwordController.text,
-                    );
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  spacing: 10,
+                  children: <Widget>[
+                    ElevatedButton(
+                      onPressed: () async {
+                        await model.login(
+                          _key,
+                          emailController.text,
+                          passwordController.text,
+                        );
 
-                    if (model.isLoggedIn && context.mounted) {
-                      Navigator.of(context).pop();
-                      Navigator.of(
-                        context,
-                      ).pushNamed(RouteGenerator.layoutPage);
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: Colors.black,
-                    textStyle: TextStyle(fontSize: 25),
-                    fixedSize: Size(180, 40),
-                  ),
-                  child: const Text("Login"),
+                        if (model.isLoggedIn && context.mounted) {
+                          Navigator.of(context).pop();
+                          Navigator.of(
+                            context,
+                          ).pushNamed(RouteGenerator.layoutPage);
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        foregroundColor: Colors.black,
+                        textStyle: TextStyle(fontSize: 25),
+                        fixedSize: Size(180, 40),
+                      ),
+                      child: const Text("Login"),
+                    ),
+                    Text(
+                      !model.isLoggedIn && model.hasAttemptedLogin
+                          ? "Login failed"
+                          : "",
+                      style: TextStyle(fontSize: 18, color: Colors.red),
+                    ),
+                  ],
                 ),
               );
             },
