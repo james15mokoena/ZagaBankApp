@@ -14,4 +14,8 @@ public class CardService(CardRepo repo)
     public CardDto? GetCardDetailsByEmailAndCardNo(string? email, string? cardNo) =>
         ValidationService.AllValid(email, cardNo) &&
         _cardRepo.GetCardDetailsByEmailAndCardNo(email, cardNo) is CardDto card ? card : null;
+
+    public bool ResetCardPin(string? email, string? cardNo, string? oldPin, string? newPin) =>
+        ValidationService.AllValid(email, cardNo, oldPin, newPin) &&
+        _cardRepo.ResetCardPin(email, cardNo, oldPin, newPin);
 }

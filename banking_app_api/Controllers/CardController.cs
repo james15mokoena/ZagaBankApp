@@ -20,4 +20,10 @@ public class CardController(CardService service) : ControllerBase
         ValidationService.AllValid(email, cardNo) &&
         _cardService.GetCardDetailsByEmailAndCardNo(email, cardNo) is CardDto card ?
         Ok(card) : BadRequest("Failed to get card details.");
+    
+    [HttpPut]
+    public IActionResult ResetCardPin(ResetCardPinDto dto) =>
+        ValidationService.AllValid(dto.Email, dto.CardNo, dto.OldPin, dto.NewPin) &&
+        _cardService.ResetCardPin(dto.Email, dto.CardNo, dto.OldPin, dto.NewPin) ?
+        Ok("true\n") : BadRequest("Failed to reset card pin\n");
 }

@@ -1,4 +1,5 @@
 using Banking_App_API.Data;
+using Banking_App_API.Models;
 using Banking_App_API.Models.DTO;
 using Banking_App_API.Services;
 
@@ -76,7 +77,35 @@ public class CardRepo(BankAppDbContext context)
                 };
             }
         }
-        
+
         return null;
+    }
+    
+    public bool ResetCardPin(string? email, string? cardNo, string? oldPin, string? newPin)
+    {
+        if (ValidationService.AllValid(email, cardNo, oldPin, newPin) && oldPin!.Length == 4 && newPin!.Length == 4)
+        {
+            if (int.TryParse(oldPin, out int oldP) && int.TryParse(newPin,out int newP))
+            {
+                Card? query =
+                    (from card in _context.Cards
+                     where card.CardNo == cardNo && card.Pin == oldP
+                     from client in _context.Clients
+                     where client.Email == email
+                     from accountHolder in _context.AccountHolders
+                     where accountHolder.CardNo == card.CardNo && accountHolder.ClientId == client.Id
+                     select card).First();
+                
+                if(query != null)
+                {
+                    query.Pin = newP;
+
+                    _context.Cards.Update(query);
+                    return _context.SaveChanges() > 0;
+                }
+            }
+        }
+
+        return false;
     }
 }
