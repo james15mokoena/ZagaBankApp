@@ -4,7 +4,6 @@ import 'package:banking_mobile_app/routes/home_page.dart';
 import 'package:banking_mobile_app/routes/layout_page.dart';
 import 'package:banking_mobile_app/routes/login_page.dart';
 import 'package:banking_mobile_app/routes/reset_card_pin_page.dart';
-import 'package:banking_mobile_app/widgets/reset_card_pin.dart';
 import 'package:flutter/material.dart';
 
 /// Handles the mapping of named routes to actual

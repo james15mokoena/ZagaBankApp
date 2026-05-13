@@ -75,14 +75,14 @@ class _LoginFormState extends State<LoginForm> {
               return Padding(
                 padding: EdgeInsetsGeometry.only(bottom: 30),
                 child: ElevatedButton(
-                  onPressed: () {
-                    bool isLoggedIn = model.login(
+                  onPressed: () async {
+                    await model.login(
                       _key,
                       emailController.text,
                       passwordController.text,
                     );
 
-                    if (isLoggedIn) {
+                    if (model.isLoggedIn && context.mounted) {
                       Navigator.of(context).pop();
                       Navigator.of(
                         context,

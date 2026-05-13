@@ -1,3 +1,5 @@
+import 'package:banking_mobile_app/models/dto/login_dto.dart';
+import 'package:banking_mobile_app/services/login_service.dart';
 import 'package:flutter/widgets.dart';
 
 /// Encapsulates the user's login details.
@@ -7,6 +9,7 @@ class LoginModel {
   // The user's email and password.
   String? _email;
   String? _password;
+  bool _isLoggedIn = false;
 
   LoginModel({String? email, String? password})
     : _email = email,
@@ -16,6 +19,8 @@ class LoginModel {
   String? get email => _email;
 
   String? get password => _password;
+
+  bool get isLoggedIn => _isLoggedIn;
 
   /// Invalidates the user's login details when they log out.
   void invalidate(BuildContext context) {
@@ -54,12 +59,20 @@ class LoginModel {
 
   /// If the user provides a valid `email` and their `password`, it stores them
   /// in this `LoginModel`.
-  bool login(GlobalKey<FormState> key, String email, String password) {
+  Future<void> login(
+    GlobalKey<FormState> key,
+    String email,
+    String password,
+  ) async {
+    //
+
     if (key.currentState?.validate() == true) {
       _email = email;
       _password = password;
-      return true;
+
+      _isLoggedIn = await LoginService.login(
+        LoginDto.fromJson({"email": _email, "password": _password}),
+      );
     }
-    return false;
   }
 }
