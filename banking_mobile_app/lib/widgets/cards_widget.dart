@@ -38,7 +38,7 @@ class _CardsWidgetState extends State<CardsWidget> {
             children: <Widget>[
               const Padding(
                 padding: EdgeInsetsGeometry.only(top: 10, bottom: 15),
-                child: Text("Your Cards", style: TextStyle(fontSize: 35)),
+                child: Text("Your Cards", style: TextStyle(fontSize: 30)),
               ),
               Consumer<CardsModel>(
                 builder: (context, cardsModel, child) {
