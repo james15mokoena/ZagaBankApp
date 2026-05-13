@@ -87,20 +87,22 @@ public class CardRepo(BankAppDbContext context)
         {
             if (int.TryParse(oldPin, out int oldP) && int.TryParse(newPin,out int newP))
             {
-                Card? query =
-                    (from card in _context.Cards
-                     where card.CardNo == cardNo && card.Pin == oldP
-                     from client in _context.Clients
-                     where client.Email == email
-                     from accountHolder in _context.AccountHolders
-                     where accountHolder.CardNo == card.CardNo && accountHolder.ClientId == client.Id
-                     select card).First();
-                
-                if(query != null)
-                {
-                    query.Pin = newP;
+                var query =
+                    from card in _context.Cards
+                    where card.CardNo == cardNo && card.Pin == oldP
+                    from client in _context.Clients
+                    where client.Email == email
+                    from accountHolder in _context.AccountHolders
+                    where accountHolder.CardNo == card.CardNo && accountHolder.ClientId == client.Id
+                    select card;
 
-                    _context.Cards.Update(query);
+                Card? crd = query.Any() ? query.First() : null;
+                
+                if(crd != null)
+                {
+                    crd.Pin = newP;
+
+                    _context.Cards.Update(crd);
                     return _context.SaveChanges() > 0;
                 }
             }

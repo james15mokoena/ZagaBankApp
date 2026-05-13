@@ -14,5 +14,5 @@ public class LoginController(LoginService service) : ControllerBase
     public IActionResult Login(LoginDto login) =>
         ValidationService.AllValid(login.Email, login.Password) &&
             _loginService.Login(login.Email, login.Password) ?
-        Ok(true) : BadRequest("Login failed.");
+        Ok("true\n") : BadRequest("Login failed.\n");
 }
