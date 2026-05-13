@@ -10,4 +10,8 @@ public class CardService(CardRepo repo)
     public List<CardDto>? GetCardsByEmail(string? email) =>
         ValidationService.AllValid(email) && _cardRepo.GetCardsByEmail(email) is List<CardDto> cards ?
         cards : null;
+
+    public CardDto? GetCardDetailsByEmailAndCardNo(string? email, string? cardNo) =>
+        ValidationService.AllValid(email, cardNo) &&
+        _cardRepo.GetCardDetailsByEmailAndCardNo(email, cardNo) is CardDto card ? card : null;
 }

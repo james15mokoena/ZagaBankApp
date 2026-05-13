@@ -47,4 +47,36 @@ public class CardRepo(BankAppDbContext context)
 
         return null;
     }
+
+    public CardDto? GetCardDetailsByEmailAndCardNo(string? email, string? cardNo)
+    {
+        if (ValidationService.AllValid(email, cardNo))
+        {
+            var query =
+                from card in _context.Cards
+                where card.CardNo == cardNo
+                from client in _context.Clients
+                where client.Email == email
+                from accountHolder in _context.AccountHolders
+                where accountHolder.CardNo == card.CardNo && accountHolder.ClientId == client.Id
+                select card;
+
+            if (query.Any())
+            {
+                return new()
+                {
+                    CardNo = query.First().CardNo,
+                    CVV = query.First().CVV,
+                    ExpiryDate = query.First().ExpiryDate,
+                    IssuingBank = query.First().IssuingBank,
+                    NetworkProvider = query.First().NetworkProvider,
+                    Pin = query.First().Pin,
+                    Status = query.First().Status,
+                    Type = query.First().Type
+                };
+            }
+        }
+        
+        return null;
+    }
 }

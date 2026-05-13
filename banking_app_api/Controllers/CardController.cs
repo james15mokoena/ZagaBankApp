@@ -1,5 +1,4 @@
 using Banking_App_API.Models.DTO;
-using Banking_App_API.Repository;
 using Banking_App_API.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,4 +14,10 @@ public class CardController(CardService service) : ControllerBase
     public IActionResult ViewCardsByEmail(string? email) =>
         ValidationService.AllValid(email) && _cardService.GetCardsByEmail(email) is List<CardDto> cards ?
         Ok(cards) : BadRequest("Failed to get cards.");
+
+    [HttpGet("{email}/{cardNo}")]
+    public IActionResult ViewCardDetailsByEmailAndCardNo(string? email, string? cardNo) =>
+        ValidationService.AllValid(email, cardNo) &&
+        _cardService.GetCardDetailsByEmailAndCardNo(email, cardNo) is CardDto card ?
+        Ok(card) : BadRequest("Failed to get card details.");
 }
