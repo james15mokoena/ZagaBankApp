@@ -12,7 +12,7 @@ public class LoginController(LoginService service) : ControllerBase
 
     [HttpPost]
     public IActionResult Login(LoginDto login) =>
-        !string.IsNullOrEmpty(login.Email) && !string.IsNullOrEmpty(login.Password) &&
+        ValidationService.AllValid(login.Email, login.Password) &&
             _loginService.Login(login.Email, login.Password) ?
         Ok(true) : BadRequest("Login failed.");
 }

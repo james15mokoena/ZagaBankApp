@@ -29,6 +29,9 @@ if (!string.IsNullOrEmpty(dbHost) && !string.IsNullOrEmpty(dbPort) && !string.Is
     builder.Services.AddScoped<LoginRepo>();
     builder.Services.AddScoped<LoginService>();
     builder.Services.AddScoped<LoginController>();
+    builder.Services.AddScoped<CardRepo>();
+    builder.Services.AddScoped<CardService>();
+    builder.Services.AddScoped<CardController>();
 
     var app = builder.Build();
 
