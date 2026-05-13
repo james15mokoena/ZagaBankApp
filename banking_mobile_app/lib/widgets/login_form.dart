@@ -1,4 +1,4 @@
-import 'package:banking_mobile_app/models/login_model.dart';
+import 'package:banking_mobile_app/models/app_cache_model.dart';
 import 'package:banking_mobile_app/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -39,7 +39,7 @@ class _LoginFormState extends State<LoginForm> {
             "Login",
             style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
           ),
-          Consumer<LoginModel>(
+          Consumer<AppCacheModel>(
             builder: (context, model, child) {
               return TextFormField(
                 controller: emailController,
@@ -54,7 +54,7 @@ class _LoginFormState extends State<LoginForm> {
               );
             },
           ),
-          Consumer<LoginModel>(
+          Consumer<AppCacheModel>(
             builder: (context, model, child) {
               return TextFormField(
                 controller: passwordController,
@@ -70,7 +70,7 @@ class _LoginFormState extends State<LoginForm> {
               );
             },
           ),
-          Consumer<LoginModel>(
+          Consumer<AppCacheModel>(
             builder: (context, model, child) {
               return Padding(
                 padding: EdgeInsetsGeometry.only(bottom: 30),

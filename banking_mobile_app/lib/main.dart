@@ -1,7 +1,7 @@
 import 'package:banking_mobile_app/models/card_details_model.dart';
 import 'package:banking_mobile_app/models/cards_model.dart';
 import 'package:banking_mobile_app/models/bottom_navbar_model.dart';
-import 'package:banking_mobile_app/models/login_model.dart';
+import 'package:banking_mobile_app/models/app_cache_model.dart';
 import 'package:banking_mobile_app/models/reset_card_pin_model.dart';
 import 'package:banking_mobile_app/routes.dart';
 import 'package:banking_mobile_app/services/card_service.dart';
@@ -25,12 +25,18 @@ class BankingApp extends StatelessWidget {
         Provider<CardService>(create: (_) => CardService()),
         Provider<LoginService>(create: (_) => LoginService()),
         // register models
-        ChangeNotifierProvider<LoginModel>(create: (_) => LoginModel()),
-        Provider<CardDetailsModel>(create: (_) => CardDetailsModel()),
-        Provider<ResetCardPinModel>(create: (_) => ResetCardPinModel()),
+        ChangeNotifierProvider<AppCacheModel>(create: (_) => AppCacheModel()),
+        ChangeNotifierProvider<CardDetailsModel>(
+          create: (context) =>
+              CardDetailsModel(appCache: context.read<AppCacheModel>()),
+        ),
+        ChangeNotifierProvider<ResetCardPinModel>(
+          create: (context) =>
+              ResetCardPinModel(appCache: context.read<AppCacheModel>()),
+        ),
         ChangeNotifierProvider<CardsModel>(
           create: (context) =>
-              CardsModel(loginModel: context.read<LoginModel>()),
+              CardsModel(loginModel: context.read<AppCacheModel>()),
         ),
         ChangeNotifierProvider(create: (_) => BottomNavbarModel()),
       ],

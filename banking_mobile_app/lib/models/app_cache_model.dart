@@ -2,19 +2,26 @@ import 'package:banking_mobile_app/models/dto/login_dto.dart';
 import 'package:banking_mobile_app/services/login_service.dart';
 import 'package:flutter/widgets.dart';
 
-/// Encapsulates the user's login details.
-///
-/// The business logic for the LoginForm widget.
-class LoginModel with ChangeNotifier {
-  // The user's email and password.
+/// Encapsulates the application wide state.
+class AppCacheModel with ChangeNotifier {
+  // Login related state
   String? _email;
   String? _password;
   bool _isLoggedIn = false;
   bool _hasAttemptedLogin = false;
+  // card related state
+  String? cardNo;
 
-  LoginModel({String? email, String? password})
-    : _email = email,
-      _password = password;
+  AppCacheModel({
+    String? email,
+    String? password,
+    bool isLoggedIn = false,
+    bool hasAttemptedLogin = false,
+    this.cardNo,
+  }) : _email = email,
+       _password = password,
+       _isLoggedIn = isLoggedIn,
+       _hasAttemptedLogin = hasAttemptedLogin;
 
   // getters
   String? get email => _email;
@@ -72,8 +79,6 @@ class LoginModel with ChangeNotifier {
     String email,
     String password,
   ) async {
-    //
-
     if (key.currentState?.validate() == true) {
       _email = email;
       _password = password;

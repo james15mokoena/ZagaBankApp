@@ -1,8 +1,14 @@
 //
 
+import 'package:banking_mobile_app/models/app_cache_model.dart';
+import 'package:banking_mobile_app/models/dto/card_dto.dart';
+import 'package:banking_mobile_app/services/card_service.dart';
+import 'package:flutter/foundation.dart';
+
 /// Stores the details of a card.
-class CardDetailsModel {
+class CardDetailsModel with ChangeNotifier {
   //
+  final AppCacheModel _appCache;
 
   final String? _cardNo;
   final int? _cardPin;
@@ -14,6 +20,7 @@ class CardDetailsModel {
   final int? _cardCVV;
 
   CardDetailsModel({
+    required AppCacheModel appCache,
     String? cardNo,
     int? cardPin,
     String? cardType,
@@ -22,7 +29,8 @@ class CardDetailsModel {
     DateTime? cardExpiryDate,
     String? cardStatus,
     int? cardCVV,
-  }) : _cardNo = cardNo,
+  }) : _appCache = appCache,
+       _cardNo = cardNo,
        _cardPin = cardPin,
        _cardType = cardType,
        _cardNetworkProvider = cardNetworkProvider,
@@ -39,4 +47,15 @@ class CardDetailsModel {
   DateTime? get cardExpiryDate => _cardExpiryDate;
   String? get cardStatus => _cardStatus;
   int? get cardCVV => _cardCVV;
+
+  /// Fetches the selected card's details.
+  Future<CardDto> getCardDetailsByEmailAndCardNo() async {
+    CardDto? card = await CardService.getCardDetailsByEmailAndCardNo(
+      _appCache.email!,
+      _appCache.cardNo!,
+    );
+
+    notifyListeners();
+    return card;
+  }
 }

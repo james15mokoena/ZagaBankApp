@@ -25,5 +25,5 @@ public class CardController(CardService service) : ControllerBase
     public IActionResult ResetCardPin(ResetCardPinDto dto) =>
         ValidationService.AllValid(dto.Email, dto.CardNo, dto.OldPin, dto.NewPin) &&
         _cardService.ResetCardPin(dto.Email, dto.CardNo, dto.OldPin, dto.NewPin) ?
-        Ok("true") : BadRequest("Failed to reset card pin\n");
+        Ok(true) : BadRequest("Failed to reset card pin\n");
 }

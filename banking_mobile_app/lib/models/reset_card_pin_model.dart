@@ -1,15 +1,27 @@
+import 'package:banking_mobile_app/models/app_cache_model.dart';
+import 'package:banking_mobile_app/services/card_service.dart';
 import 'package:flutter/widgets.dart';
+import 'package:http/http.dart';
 
-class ResetCardPinModel {
+class ResetCardPinModel with ChangeNotifier {
   //
-  String? _email;
+  final AppCacheModel _appCache;
   int? _previousPin;
   int? _newPin;
+  bool _isReset = false;
+  bool _hasAttemptedCardPinReset = false;
 
-  ResetCardPinModel({String? email, int? previousPin, int? newPin})
-    : _email = email,
-      _previousPin = previousPin,
-      _newPin = newPin;
+  ResetCardPinModel({
+    required AppCacheModel appCache,
+    int? previousPin,
+    int? newPin,
+  }) : _appCache = appCache,
+       _previousPin = previousPin,
+       _newPin = newPin;
+
+  bool get isReset => _isReset;
+
+  bool get hasAttemptedCardPinReset => _hasAttemptedCardPinReset;
 
   String? validatePreviousPin(String? pin) {
     if (pin != null && pin.isNotEmpty && pin.length == 4) {
@@ -43,14 +55,31 @@ class ResetCardPinModel {
     return null;
   }
 
-  bool resetPin(GlobalKey<FormState> key, String? oldPin, String? newPin) {
-    //
-
+  Future<bool> resetPin(
+    GlobalKey<FormState> key,
+    String? oldPin,
+    String? newPin,
+  ) async {
     if (key.currentState?.validate() == true) {
       _newPin = int.tryParse(newPin!);
       _previousPin = int.tryParse(oldPin!);
+
       if (_newPin != null && _previousPin != null) {
-        return true;
+        try {
+          _isReset = await CardService.resetCardPin(
+            _appCache.email!,
+            _appCache.cardNo!,
+            oldPin,
+            newPin,
+          );
+
+          _hasAttemptedCardPinReset = true;
+          notifyListeners();
+
+          if (_isReset) {
+            return true;
+          }
+        } on ClientException catch (_) {}
       }
     }
 

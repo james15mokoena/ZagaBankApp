@@ -1,3 +1,4 @@
+import 'package:banking_mobile_app/models/app_cache_model.dart';
 import 'package:banking_mobile_app/models/cards_model.dart';
 import 'package:banking_mobile_app/models/dto/card_dto.dart';
 import 'package:banking_mobile_app/routes.dart';
@@ -65,38 +66,48 @@ class _CardsWidgetState extends State<CardsWidget> {
                       }
 
                       // cards are available
-                      return Expanded(
-                        child: ListView.separated(
-                          itemCount: snapshot.data!.length,
-                          separatorBuilder: (context, index) =>
-                              const Divider(color: Colors.grey),
-                          itemBuilder: (context, index) {
-                            return Card(
-                              color: Colors.blueGrey[800],
-                              elevation: 10,
-                              child: ListTile(
-                                isThreeLine: true,
-                                title: Text(snapshot.data![index].cardNo!),
-                                subtitle: Text(
-                                  "Status: ${snapshot.data![index].status}",
-                                ),
-                                leading: Icon(MdiIcons.accountCard),
-                                trailing: Text("${snapshot.data![index].type}"),
-                                selectedColor: Colors.cyanAccent,
-                                selected: cardsModel.selectedCardIndex == index
-                                    ? true
-                                    : false,
-                                onTap: () {
-                                  cardsModel.updateSelectedCardIndex(index);
-                                  Navigator.of(
-                                    context,
-                                  ).pushNamed(RouteGenerator.cardDetailsPage);
-                                  // navigate to the
-                                },
-                              ),
-                            );
-                          },
-                        ),
+                      return Consumer<AppCacheModel>(
+                        builder: (context, appCache, child) {
+                          return Expanded(
+                            child: ListView.separated(
+                              itemCount: snapshot.data!.length,
+                              separatorBuilder: (context, index) =>
+                                  const Divider(color: Colors.grey),
+                              itemBuilder: (context, index) {
+                                return Card(
+                                  color: Colors.blueGrey[800],
+                                  elevation: 10,
+                                  child: ListTile(
+                                    isThreeLine: true,
+                                    title: Text(snapshot.data![index].cardNo!),
+                                    subtitle: Text(
+                                      "Status: ${snapshot.data![index].status}",
+                                    ),
+                                    leading: Icon(MdiIcons.accountCard),
+                                    trailing: Text(
+                                      "${snapshot.data![index].type}",
+                                    ),
+                                    selectedColor: Colors.cyanAccent,
+                                    selected:
+                                        cardsModel.selectedCardIndex == index
+                                        ? true
+                                        : false,
+                                    onTap: () {
+                                      cardsModel.updateSelectedCardIndex(index);
+                                      appCache.cardNo = snapshot
+                                          .data![cardsModel.selectedCardIndex]
+                                          .cardNo;
+                                      Navigator.of(context).pushNamed(
+                                        RouteGenerator.cardDetailsPage,
+                                      );
+                                      // navigate to the
+                                    },
+                                  ),
+                                );
+                              },
+                            ),
+                          );
+                        },
                       );
                     },
                   );

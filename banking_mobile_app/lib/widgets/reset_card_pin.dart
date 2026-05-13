@@ -75,21 +75,37 @@ class _ResetCardPinState extends State<ResetCardPin> {
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 fixedSize: const Size(200, 30),
+                                backgroundColor: Colors.white,
                               ),
-                              onPressed: () {
-                                bool isReset = model.resetPin(
+                              onPressed: () async {
+                                bool isReset = await model.resetPin(
                                   _key,
                                   _previousPinController.text,
                                   _newPinController.text,
                                 );
 
-                                if (isReset == true) {
+                                if (context.mounted && isReset) {
                                   Navigator.of(context).pop();
+                                } else if (context.mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: const Text(
+                                        "Reset failed",
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                    ),
+                                  );
                                 }
                               },
                               child: const Text(
                                 "Reset",
-                                style: TextStyle(fontSize: 18),
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.black,
+                                ),
                               ),
                             ),
                           ],
